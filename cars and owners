@@ -1,0 +1,68 @@
+CREATE TABLE owners (
+    owner_id INT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) UNIQUE NOT NULL
+
+    CONSTRAINT name_length
+        CHECK (length(full_name) >= 2)
+);
+
+CREATE TABLE cars (
+    car_id INT PRIMARY KEY,
+    brand VARCHAR(50) NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    owner_id INT NOT NULL,
+
+    CONSTRAINT unique_car
+        UNIQUE (brand, model, owner_id),
+
+    CONSTRAINT fk_car_owner
+        FOREIGN KEY (owner_id)
+        REFERENCES owners(owner_id)
+        
+);
+
+INSERT INTO owners (owner_id, full_name, phone) VALUES
+(1, 'Иванов Иван Иванович', '+79001112233'),
+(2, 'Петрова Анна Сергеевна', '+79004445566'),
+(3, 'Сидоров Олег Петрович', '+79007778899'),
+(4, 'Кузнецова Елена Владимировна', '+79002223344'),
+(5, 'Смирнов Дмитрий Алексеевич', '+79005556677'),
+(6, 'Васильева Ольга Николаевна', '+79008889900'),
+(7, 'Попов Андрей Юрьевич', '+79003334455'),
+(8, 'Соколова Мария Константиновна', '+79006667788'),
+(9, 'Михайлов Сергей Викторович', '+79009990011'),
+(10, 'Новикова Татьяна Павловна', '+79001234567');
+
+INSERT INTO cars (car_id, brand, model, owner_id) VALUES
+-- Владелец 1
+(1, 'Toyota', 'Camry', 1),
+(2, 'Honda', 'Civic', 1),
+
+-- Владелец 2
+(3, 'BMW', 'X5', 2),
+(4, 'Audi', 'A4', 2),
+
+-- Владелец 3
+(5, 'Mercedes-Benz', 'E-Class', 3),
+
+-- Владелец 4
+(6, 'Kia', 'Sportage', 4),
+(7, 'Hyundai', 'Tucson', 4),
+
+-- Владелец 5
+(8, 'Ford', 'Focus', 5),
+
+-- Владелец 6
+(9, 'Skoda', 'Octavia', 6),
+(10, 'Volkswagen', 'Polo', 6);
+
+
+SELECT 
+    cars.car_id,
+    cars.brand,
+    cars.model,
+    owners.full_name,
+    owners.phone
+FROM cars
+JOIN owners ON cars.owner_id = owners.owner_id;
